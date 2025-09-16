@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 interface NavList {
   id: number;
   title: string;
@@ -9,7 +11,7 @@ interface NavList {
 }
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [RouterLink, MatMenu, MatMenuTrigger, MatMenuItem],
   template: `
     <header class="bg-white">
       <div class="px-8 flex">
@@ -19,29 +21,43 @@ interface NavList {
         <div class="mb-2 mt-6">
           <ul class="flex items-center">
             @for (item of navItem; track item.id) {
-              <li class="pr-8 text-base text-header-list font-normal">
-                <a>{{ item.title }}</a>
+              <li
+                class="pr-8 text-base text-header-list font-normal cursor-pointer hover:text-primary-blue"
+              >
+                <a [routerLink]="item.link">{{ item.title }}</a>
               </li>
             }
-            <li class="flex gap-1">
-              <div class="w-1 h-1 bg-header-list"></div>
-              <div class="w-1 h-1 bg-header-list"></div>
-              <div class="w-1 h-1 bg-header-list"></div>
-            </li>
+            <button [matMenuTriggerFor]="menu" class="flex gap-1 cursor-pointer group">
+              <div class="w-1 h-1 group-hover:bg-primary-blue bg-header-list"></div>
+              <div class="w-1 h-1 group-hover:bg-primary-blue bg-header-list"></div>
+              <div class="w-1 h-1 group-hover:bg-primary-blue bg-header-list"></div>
+            </button>
+            <mat-menu #menu="matMenu" class="mt-3">
+              <a routerLink="/header" mat-menu-item>旅遊攻略</a>
+              <a routerLink="/header" mat-menu-item>排行榜</a>
+              <a routerLink="/header" mat-menu-item>旅遊地圖</a>
+              <a routerLink="/header" mat-menu-item>Trip.com 獎勵計劃</a>
+              <a routerLink="/header" mat-menu-item>優惠</a>
+            </mat-menu>
           </ul>
         </div>
         <div class="ml-auto">
           <ul class="flex items-center font-medium text-sm">
             @for (item of navFunction; track item.id) {
               @if (item.title === 'TWD') {
-                <li class="flex p-2 mx-1 my-4 h-list-right hover:text-primary-blue">
+                <li
+                  class="rounded flex p-2 mx-1 my-4 h-list-right hover:text-primary-blue hover:bg-input-container-hover cursor-pointer"
+                >
                   <span>繁</span>
                   <span class=""></span>
                   <span>{{ item.title }}</span>
                 </li>
               } @else {
-                <li class="h-list-right mx-1 my-4">
-                  <a class="inline-block p-2 hover:text-primary-blue">{{ item.title }}</a>
+                <li class=" h-list-right mx-1 my-4 cursor-pointer">
+                  <a
+                    class="inline-block p-2 rounded hover:text-primary-blue hover:bg-input-container-hover"
+                    >{{ item.title }}</a
+                  >
                 </li>
               }
             }
@@ -95,7 +111,7 @@ interface NavList {
         </div>
         <div class="min-w-divider h-8 bg-divider"></div>
         <div
-          class="flex justify-between items-center w-3/10 h-full rounded pl-2 mx-2 max-w-1/3 relative hover:bg-input-container-hover"
+          class="flex justify-between items-center w-3/10 h-full rounded pl-2 mx-2 max-w-1/3 relative hover:bg-input-container-hover cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +132,7 @@ interface NavList {
               value="9月15日 週一"
               placeholder="選擇日期"
               readonly
-              class="w-full h-full rounded text-base font-bold outline-none bg-transparent"
+              class="w-full h-full rounded text-base font-bold outline-none bg-transparent cursor-pointer"
             />
           </div>
           <div>-</div>
@@ -126,15 +142,17 @@ interface NavList {
               value="9月19日 週五"
               placeholder="選擇日期"
               readonly
-              class="w-full h-full rounded text-base font-bold outline-none bg-transparent"
+              class="w-full h-full rounded text-base font-bold outline-none bg-transparent cursor-pointer"
             />
           </div>
-          <div>4晚</div>
+          <div class="rounded-lg bg-night px-2">
+            <span>4晚</span>
+          </div>
         </div>
         <div class="min-w-divider h-8 bg-divider"></div>
 
         <div
-          class="flex items-center h-full flex-1 rounded pl-2 mx-2 relative hover:bg-input-container-hover"
+          class="flex items-center h-full flex-1 rounded pl-2 mx-2 relative hover:bg-input-container-hover cursor-pointer"
         >
           <div class="flex w-full items-center py-2 pl-2 pr-4 rounded">
             <svg

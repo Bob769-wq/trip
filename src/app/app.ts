@@ -12,7 +12,7 @@ import { Footer } from './footer/footer';
   template: `
     <app-header />
     <div class="flex max-w-6.5xl mx-auto mt-4 px-6">
-      <app-sidenav class="mr-4 w-sidenav" />
+      <app-sidenav class="mr-4 w-sidenav overflow-y-auto " />
       <div class="flex-1">
         <app-crumb />
         <app-card />
