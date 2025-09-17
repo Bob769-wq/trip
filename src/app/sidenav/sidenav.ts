@@ -1,8 +1,16 @@
 import { Component } from '@angular/core';
 import { MatFormField, MatLabel, MatOption, MatSelect } from '@angular/material/select';
+import { NgStyle } from '@angular/common';
 interface SideList {
   id: number;
   title: string;
+}
+
+interface SideFooter {
+  id: number;
+  title: string;
+  content: string;
+  img: string;
 }
 
 interface theList {
@@ -10,69 +18,126 @@ interface theList {
   title: string;
   isTruncated?: boolean;
   children?: theList[];
+  selectionType?: 'checkbox' | 'radio';
 }
 
 @Component({
   selector: 'app-sidenav',
-  imports: [MatSelect, MatOption, MatFormField, MatLabel],
+  imports: [MatSelect, MatOption, MatFormField, MatLabel, NgStyle],
   template: `
-    <div class="overflow-y-auto">
-      <div class="relative mb-2 cursor-pointer">
-        <img src="/sidenav-pic.png" alt="map" />
-        <button
-          class="py-2 px-6 text-white rounded bg-primary-blue hover:bg-primary-blue-hover
-        absolute inset-x-16 inset-y-8"
-        >
-          在地圖上顯示
-        </button>
+    <div class="relative mb-2 cursor-pointer">
+      <img src="/sidenav-pic.png" alt="map" />
+      <button
+        class="py-2 px-6 text-white rounded bg-primary-blue hover:bg-primary-blue-hover
+            absolute inset-x-16 inset-y-8"
+      >
+        在地圖上顯示
+      </button>
+    </div>
+    <div class="px-4 pt-4 mb-mini bg-white">
+      <h3 class="font-semibold mb-3">台北的熱門篩選條件</h3>
+      <ul class="mt-2">
+        @for (item of tpPop; track item.id) {
+          <li class="flex gap-2">
+            <input type="checkbox" />
+            <span class="my-2">{{ item.title }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="px-4 pt-4 mb-mini bg-white">
+      <h3 class="font-semibold mb-3">預算 <span class="text-location">(NT$0 - NT$7,500+)</span></h3>
+      <div
+        class="p-2 mb-6 min-w-40 rounded cursor-pointer bg-side-button hover:outline-primary-blue hover:outline"
+      >
+        <div class="flex justify-between gap-2 items-center">
+          <span class="text-ellipsis max-w-48">每間每晚價格（含稅及附加費）</span>
+          <i class="fa-solid fa-chevron-down fa-sm"></i>
+        </div>
       </div>
-      <div class="px-2 pt-4 mb-mini bg-white">
-        <h3 class="font-semibold">台北的熱門篩選條件</h3>
-        <ul class="mt-2">
-          @for (item of tpPop; track item.id) {
-            <li class="flex gap-2">
-              <input type="checkbox" />
-              <span class="my-2">{{ item.title }}</span>
-            </li>
+      <div class="h-mini w-full bg-black"></div>
+      <div class="flex mt-4 flex-wrap">
+        <div class="p-2 rounded mb-2 mr-1 max-w-60 bg-side-button text-xs">NT$0 - NT$1,700</div>
+        <div class="p-2 rounded mb-2 mr-1 max-w-60 bg-side-button text-xs">NT$1,700 - NT$2,500</div>
+        <div class="p-2 rounded mb-2 mr-1 max-w-60 bg-side-button text-xs">NT$2,500 - NT$3,400</div>
+        <div class="p-2 rounded mb-2 mr-1 max-w-60 bg-side-button text-xs">NT$3,400 - NT$4,900</div>
+        <div class="p-2 rounded mb-2 mr-1 max-w-60 bg-side-button text-xs">NT$4,900 - NT$7,500</div>
+        <div class="p-2 rounded mb-2 mr-1 max-w-60 bg-side-button text-xs">>NT$7,500</div>
+      </div>
+    </div>
+    <div class="px-4 pt-4 mb-mini bg-white">
+      <h3 class="font-semibold mb-3">星級</h3>
+      <div class="flex items-center">
+        <div
+          class="flex items-center justify-center gap-1 w-14 h-8 rounded mb-2 mr-1 bg-side-button text-xs"
+        >
+          <span>≤2</span><i class="fa-solid fa-star fa-xs" style="color: #FFD43B;"></i>
+        </div>
+        <div
+          class="flex items-center justify-center gap-1 w-14 h-8 rounded mb-2 mr-1 bg-side-button text-xs"
+        >
+          <span>3</span><i class="fa-solid fa-star fa-xs" style="color: #FFD43B;"></i>
+        </div>
+        <div
+          class="flex items-center justify-center gap-1 w-14 h-8 rounded mb-2 mr-1 bg-side-button text-xs"
+        >
+          <span>4</span><i class="fa-solid fa-star fa-xs" style="color: #FFD43B;"></i>
+        </div>
+        <div
+          class="flex items-center justify-center gap-1 w-14 h-8 rounded mb-2 mr-1 bg-side-button text-xs"
+        >
+          <span>5</span><i class="fa-solid fa-star fa-xs" style="color: #FFD43B;"></i>
+        </div>
+      </div>
+    </div>
+
+    @for (item of checkItems; track item.id) {
+      <div class="px-4 pt-4 mb-mini bg-white">
+        <h3 class="font-semibold mb-3">{{ item.title }}</h3>
+        <ul>
+          @if (item.children && item.children.length > 0) {
+            @for (
+              child of item.isTruncated ? item.children.slice(0, 5) : item.children;
+              track child.title
+            ) {
+              <li>
+                <label class="flex gap-2 cursor-pointer">
+                  @if (item.selectionType === 'radio') {
+                    <input type="radio" [name]="item.id" />
+                  } @else {
+                    <input type="checkbox" />
+                  }
+
+                  <span class="my-2">{{ child.title }}</span>
+                </label>
+              </li>
+            }
+            @if (item.children.length > 5) {
+              <li
+                class="text-primary-blue cursor-pointer hover:underline py-2"
+                (click)="toggleTruncated(item)"
+              >
+                顯示全部
+              </li>
+            }
           }
         </ul>
       </div>
-      <div class="px-2 pt-4 mb-mini bg-white">
-        <h3 class="font-semibold">預算 <span class="text-location">(NT$0 - NT$7,500+)</span></h3>
-        <mat-form-field>
-          <mat-label class="">每間每晚價格（含稅及附加費）</mat-label>
-          <mat-select>
-            <mat-option>每間每晚價格（未含稅及附加費）</mat-option>
-            <mat-option>每間每晚價格（含稅及附加費）</mat-option>
-            <mat-option>住宿總價（含稅及附加費）</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      @for (item of checkItems; track item.id) {
-        <div class="px-2 pt-4 mb-mini bg-white">
-          <h3 class="font-semibold">{{ item.title }}</h3>
-          <ul>
-            @if (item.children && item.children.length > 0) {
-              @for (
-                child of item.isTruncated ? item.children.slice(0, 5) : item.children;
-                track child.title
-              ) {
-                <li class="flex gap-2">
-                  <input type="checkbox" />
-                  <span class="my-2">{{ child.title }}</span>
-                </li>
-              }
-              @if (item.children.length > 5) {
-                <li
-                  class="text-primary-blue cursor-pointer hover:underline my-2"
-                  (click)="toggleTruncated(item)"
-                >
-                  顯示全部
-                </li>
-              }
-            }
-          </ul>
+    }
+    <div class="m-4 flex flex-col">
+      <h3 class="mb-4">為何選擇 Trip.com?</h3>
+      @for (item of footer; track item.id) {
+        <div class="flex gap-2 mb-4">
+          <div
+            class="w-6 h-6 bg-cover bg-no-repeat flex-shrink-0"
+            [ngStyle]="{ 'background-image': 'url(' + item.img + ')' }"
+          ></div>
+          <div class="flex flex-col gap-1">
+            <h4 class="font-bold">{{ item.title }}</h4>
+            <p class="text-xs text-side-footer">
+              {{ item.content }}
+            </p>
+          </div>
         </div>
       }
     </div>
@@ -85,6 +150,23 @@ export class Sidenav {
       item.isTruncated = !item.isTruncated;
     }
   }
+
+  footer: SideFooter[] = [
+    {
+      id: 1,
+      title: '買貴退價差',
+      img: '/side-footer-1.png',
+      content: ' 我們致力提供最優惠的價格，若您在其他地方找到更便宜的選項，我們將退款差價。',
+    },
+    {
+      id: 2,
+      title: '獲得旅遊獎勵',
+      img: '/side-foot-2.png',
+      content: ' 每筆訂單均可獲得折扣獎勵，如何使用均無限制',
+    },
+    { id: 3, title: '4.8', img: '/side-footer-3.png', content: ' 206,715 條評論' },
+    { id: 4, title: '4.7', img: '/side-footer-4.png', content: ' 20,234 條評論' },
+  ];
 
   tpPop: SideList[] = [
     { id: 1, title: '西門町商圈' },
@@ -104,6 +186,7 @@ export class Sidenav {
       id: 1,
       title: '房客評分',
       isTruncated: false,
+      selectionType: 'checkbox',
       children: [
         { id: 1, title: '愉快 6+' },
         { id: 2, title: '好 7+' },
@@ -115,6 +198,7 @@ export class Sidenav {
       id: 2,
       title: '位置',
       isTruncated: true,
+      selectionType: 'radio',
       children: [
         { id: 1, title: '西門町商圈' },
         { id: 2, title: '台北101大樓' },
@@ -130,6 +214,7 @@ export class Sidenav {
       id: 3,
       title: '住宿類型',
       isTruncated: true,
+      selectionType: 'checkbox',
       children: [
         { id: 1, title: '飯店' },
         { id: 2, title: '民宿及公寓' },
@@ -145,6 +230,7 @@ export class Sidenav {
       id: 4,
       title: '飯店設施及服務',
       isTruncated: true,
+      selectionType: 'checkbox',
       children: [
         { id: 1, title: '提供車位' },
         { id: 2, title: '游泳池' },
@@ -160,6 +246,7 @@ export class Sidenav {
       id: 5,
       title: '客房設施和服務',
       isTruncated: true,
+      selectionType: 'checkbox',
       children: [
         { id: 1, title: '浴缸' },
         { id: 2, title: '陽台' },
@@ -175,6 +262,7 @@ export class Sidenav {
       id: 6,
       title: '開業/裝修時間',
       isTruncated: false,
+      selectionType: 'checkbox',
       children: [
         { id: 1, title: '6個月內' },
         { id: 2, title: '1年內' },
@@ -185,6 +273,7 @@ export class Sidenav {
       id: 7,
       title: '床型',
       isTruncated: true,
+      selectionType: 'radio',
       children: [
         { id: 1, title: '1張雙人床' },
         { id: 2, title: '2張床' },
@@ -198,6 +287,7 @@ export class Sidenav {
       id: 8,
       title: '房間特色',
       isTruncated: true,
+      selectionType: 'radio',
       children: [
         { id: 1, title: '家庭房' },
         { id: 2, title: '套房' },
@@ -221,20 +311,108 @@ export class Sidenav {
       id: 10,
       title: '客房方案',
       isTruncated: false,
+      selectionType: 'checkbox',
       children: [
         { id: 1, title: '機場送機服務' },
         { id: 2, title: '房型升等服務' },
         { id: 3, title: '自助晚餐服務' },
       ],
     },
-    { id: 11, title: '房間面積', children: [] },
-    { id: 12, title: '餐點', children: [] },
-    { id: 13, title: '特色主題', children: [] },
-    { id: 14, title: '旅客印象', children: [] },
-    { id: 15, title: '評論', children: [] },
-    { id: 16, title: '品牌', children: [] },
-    { id: 17, title: '優惠', children: [] },
-    { id: 18, title: '付款方式', children: [] },
-    { id: 19, title: '訂房政策', children: [] },
+    {
+      id: 11,
+      title: '房間面積',
+      isTruncated: false,
+      selectionType: 'radio',
+      children: [
+        { id: 1, title: '≥25㎡' },
+        { id: 2, title: '≥30㎡' },
+        { id: 3, title: '≥45㎡' },
+      ],
+    },
+    {
+      id: 12,
+      title: '餐點',
+      isTruncated: false,
+      selectionType: 'checkbox',
+      children: [
+        { id: 1, title: '包含早餐' },
+        { id: 2, title: '含午餐' },
+        { id: 3, title: '含晚餐' },
+      ],
+    },
+    {
+      id: 13,
+      title: '特色主題',
+      isTruncated: true,
+      selectionType: 'checkbox',
+      children: [
+        { id: 1, title: '特色溫泉' },
+        { id: 2, title: '親子友善' },
+        { id: 3, title: '特色泳池' },
+        { id: 4, title: '絕佳景觀' },
+        { id: 5, title: '浪漫氛圍' },
+        { id: 6, title: '原始風格' },
+      ],
+    },
+    {
+      id: 14,
+      title: '旅客印象',
+      isTruncated: true,
+      selectionType: 'checkbox',
+      children: [
+        { id: 1, title: '位置便利' },
+        { id: 2, title: '乾淨整潔' },
+        { id: 3, title: '完善服務' },
+        { id: 4, title: '安靜房間' },
+        { id: 5, title: '活動豐富' },
+        { id: 6, title: '店員很棒' },
+      ],
+    },
+    {
+      id: 15,
+      title: '評論',
+      isTruncated: false,
+      selectionType: 'checkbox',
+      children: [
+        { id: 1, title: '500+' },
+        { id: 2, title: '200+' },
+        { id: 3, title: '100+' },
+      ],
+    },
+    {
+      id: 16,
+      title: '品牌',
+      isTruncated: true,
+      selectionType: 'checkbox',
+      children: [
+        { id: 1, title: 'citizenM' },
+        { id: 2, title: 'Fun Stay Inn' },
+        { id: 3, title: 'Grand Fresa' },
+        { id: 4, title: 'Hyatt' },
+        { id: 5, title: 'i hotel電競旅館' },
+        { id: 6, title: 'Hilton' },
+      ],
+    },
+
+    {
+      id: 17,
+      title: '付款方式',
+      isTruncated: false,
+      selectionType: 'radio',
+      children: [
+        { id: 1, title: '線上付款' },
+        { id: 2, title: '飯店付款' },
+      ],
+    },
+    {
+      id: 18,
+      title: '訂房政策',
+      isTruncated: false,
+      selectionType: 'checkbox',
+      children: [
+        { id: 1, title: '即時確認' },
+        { id: 2, title: '免費取消' },
+      ],
+    },
   ];
 }

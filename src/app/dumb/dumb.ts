@@ -25,12 +25,14 @@ interface stayItem {
     <li class="mb-4 hover:shadow-lg">
       <a [routerLink]="product().link">
         <div class="flex bg-white rounded-lg overflow-hidden">
-          <div class="w-card-img self-stretch object-cover overflow-hidden">
+          <div class="w-card-img self-stretch object-cover overflow-hidden relative">
             <img [src]="product().img" class="h-full w-full" [alt]="product().title" />
+
+            <i class="fa-regular fa-heart bg-white absolute top-5 right-5 p-2 rounded-full"></i>
           </div>
           <div class="p-4 flex-1 flex flex-col">
             <div class="flex items-center mb-2">
-              <h3 class="font-medium text-lg">{{ product().title }}</h3>
+              <h3 class="font-medium text-lg hover:underline">{{ product().title }}</h3>
               @for (i of starArray(); track $index) {
                 <i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i>
               }
@@ -44,9 +46,9 @@ interface stayItem {
               <div>{{ product().commentNum }}條評論．</div>
               <div>{{ product().comment }}</div>
             </div>
-            <div class="flex">
+            <div class="flex gap-2">
               <div class="text-location">{{ product().location }}</div>
-              <div class="text-primary-blue">在地圖上顯示</div>
+              <div class="text-primary-blue hover:underline cursor-pointer">在地圖上顯示</div>
             </div>
             <div class="bg-[#F6F7FA] mt-2 pl-4 flex-1 rounded">
               <div class="flex  justify-between">

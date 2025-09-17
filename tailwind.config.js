@@ -4,11 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'side-button': '#f5f7fa',
         night: '#f0f2f5',
         'header-list': '#051A37',
         'light-gray': '#F6F7FA',
         side: '#0F294D',
         'primary-blue': '#3264FF',
+        'menu-hover': '#3264ff14',
         'primary-blue-hover': '#2953D6',
         rating: '#1136A6',
         'rating-total': '#ffffff80',
@@ -18,6 +20,7 @@ module.exports = {
         location: '#4f5563',
         'tag-background': '#f94c8614',
         'tag-text': '#ec3c77',
+        'side-footer': '#8592a6',
       },
       spacing: {
         xxs: '1px',
