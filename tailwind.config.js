@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'cover-bg': '#00000099',
         'side-button': '#f5f7fa',
         night: '#f0f2f5',
         'header-list': '#051A37',
@@ -26,8 +27,14 @@ module.exports = {
         xxs: '1px',
         mini: '2px',
       },
-      screens: {},
+      screens: {
+        xxl: '1920px',
+        'search-col': '900px',
+        's-m': '590px',
+      },
       width: {
+        map: '136px',
+        's-logo': '74px',
         logo: '124px',
         '3/10': '30%',
         sidenav: '278px',
@@ -38,12 +45,14 @@ module.exports = {
         'input-max': '100%-24px',
         '6.5xl': '1160px',
         '1/3': '33%',
+        'search-col': '900px',
       },
       minWidth: {
         'input-container': '200px',
         divider: '1px',
       },
       height: {
+        's-logo': '18px',
         logo: '30px',
         'list-right': '34px',
       },

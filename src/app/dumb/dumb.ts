@@ -37,22 +37,24 @@ interface stayItem {
                 <i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i>
               }
             </div>
-            <div class="flex gap-1 mb-1">
+            <div class="flex lg:flex-nowrap flex-wrap gap-1 mb-1">
               <div class="bg-rating rounded-full rounded-tr-none py-xxs px-1">
                 <span class="text-white">{{ product().rating }}</span
                 ><span class="text-rating-total">/10</span>
               </div>
               <div class="text-rating font-medium">{{ product().shortComment }}</div>
               <div>{{ product().commentNum }}條評論．</div>
-              <div>{{ product().comment }}</div>
+              <div class="text-rating">{{ product().comment }}</div>
             </div>
-            <div class="flex gap-2">
-              <div class="text-location">{{ product().location }}</div>
-              <div class="text-primary-blue hover:underline cursor-pointer">在地圖上顯示</div>
+            <div class="flex flex-wrap lg:flex-nowrap gap-2">
+              <div class="text-location">
+                {{ product().location }}
+                <span class="text-primary-blue hover:underline cursor-pointer">在地圖上顯示</span>
+              </div>
             </div>
             <div class="bg-[#F6F7FA] mt-2 pl-4 flex-1 rounded">
-              <div class="flex  justify-between">
-                <div class="py-2">
+              <div class="flex justify-between">
+                <div class="lg:py-2 search-col:block hidden">
                   <p class="font-medium">{{ product().room }}</p>
                   <p>最新預訂：{{ product().reserve }}前</p>
                 </div>
