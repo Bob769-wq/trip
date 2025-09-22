@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatFormField, MatLabel, MatOption, MatSelect } from '@angular/material/select';
 import { NgStyle } from '@angular/common';
 interface SideList {
   id: number;
@@ -23,7 +22,7 @@ interface theList {
 
 @Component({
   selector: 'app-sidenav',
-  imports: [MatSelect, MatOption, MatFormField, MatLabel, NgStyle],
+  imports: [NgStyle],
   template: `
     <div class="relative mb-2 cursor-pointer">
       <img src="/sidenav-pic.png" alt="map" />
