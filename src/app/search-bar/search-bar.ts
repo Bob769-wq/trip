@@ -7,16 +7,6 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
   template: `
     <form [formGroup]="form" (submit)="submit()" class="sticky top-0 z-40">
       <div class="px-1 py-4 -mt-4 bg-white shadow-lg">
-        <!--        <div class="px-1 py-4 -mt-4 bg-white">-->
-        <!--          <div-->
-        <!--            class="p-2 pr-1 border-4 border-primary-blue rounded-lg min-w-input-container-->
-        <!--            flex flex-col max-w-search-col search-col:flex-row items-center"-->
-        <!--          >-->
-        <!--            <ul class="min-w-input-container flex flex-col flex-wrap">-->
-        <!--              <li class="w-full"></li>-->
-        <!--            </ul>-->
-        <!--          </div>-->
-        <!--        </div>-->
         <div
           class="max-w-6.5xl mx-auto p-2 pr-1 h-auto search-col:h-16 min-w-input-container
           border-4 rounded-lg border-primary-blue flex flex-col search-col:flex-row search-col:items-center"
